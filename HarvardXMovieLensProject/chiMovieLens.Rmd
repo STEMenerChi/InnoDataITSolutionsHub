@@ -64,6 +64,11 @@ the target accuracy of the residual mean squared error (RMSE) less than **0.8649
 
 More details on [Recommendation systems](http://rafalab.dfci.harvard.edu/dsbook/large-datasets.html#user-effects).
 
+The R Script, R Markdown, and HTML and PDF output reports of this project can be accessed via [Github](https://github.com/STEMenerChi/DataScience/tree/main/HarvardXMovieLensProject).
+
+Software & Hardware Capacity: R v4.2.2 running on i7 Intel Core at 1.90/2.11 GHz CPU and 16GB RAM laptop.
+** The total time to run this project is approximately 1 to 1.5 hours.**
+
 # Background 
 In October 2006, Netflix offered a challenge to the data science community: improve our recommendation algorithm by 10% 
 and win a million dollars.In September 2009, the winners were announced. A summary of how the winning algorithm was put together can be found [here](http://blog.echen.me/2011/10/24/winning-the-netflix-prize-a-summary/). 
@@ -638,4 +643,8 @@ which was simplified through the recosystem package.
  4. Recommender System Using Parallel Matrix Factorization, https://cran.r-project.org/web/packages/recosystem/vignettes/introduction.html
  
  5. How to Create an R Markdown Research Report, Carsten Lange, https://www.youtube.com/watch?v=agFAR_EmXtw
-
+ 
+ 6. The R Script, R Markdown, and HTML and PDF output reports of this project can be accessed via Github, 
+    https://github.com/STEMenerChi/DataScience/tree/main/HarvardXMovieLensProject.
+    
+ 

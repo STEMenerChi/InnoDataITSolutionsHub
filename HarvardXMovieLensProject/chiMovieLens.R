@@ -1,13 +1,18 @@
-#######################################################
+###############################chiMovieLen.R#########################################################
+# 
 # Project: Movielens Project - HarvardX Data Science - Capstone Course
 # Author : Chi T. Dinh
 # Date   : 01/08/2023
-########################################################
+#
+# Github Access: https://github.com/STEMenerChi/DataScience/tree/main/HarvardXMovieLensProject
+#
+# Software & HardwareCapacity: R 4.2.2 running on i7 Intel Core @1.90/2.11 GHz CPU and 16GB RAM laptop.
+# Total time to run this project: ~1 to ~1.5 hours.  
+#
+####################################################################################################
 
-##########################################################
+
 # Required packages
-##########################################################
-
 if(!require(broom)) install.packages("broom", repos = "http://cran.us.r-project.org")
 if(!require(caret)) install.packages("caret", repos = "http://cran.us.r-project.org")
 if(!require(data.table)) install.packages("data.table")
@@ -26,9 +31,9 @@ if(!require(stringr)) install.packages("stringr")
 if(!require(tidyverse)) install.packages("tidyverse", repos = "http://cran.us.r-project.org")
 if(!require(tidyr)) install.packages("tidyr", repos = "http://cran.us.r-project.org")
 
-tidyverse_conflicts()  #lists all the conflicts between packages in the tidyverse and other loaded packages. 
+tidyverse_conflicts()  # lists all the conflicts between packages in the tidyverse and other loaded packages. 
 
-library(broom)   #broom and kableExtra packages produce beautiful tables
+library(broom)   # broom and kableExtra packages produce beautiful tables
 library(caret)
 library(data.table)
 library(dplyr)
