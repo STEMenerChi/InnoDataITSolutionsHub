@@ -1,0 +1,94 @@
+USE [OCC]
+GO
+
+/****** Object:  View [dbo].[vwDT1dSR]    Script Date: 4/2/2020 4:02:48 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+
+ALTER VIEW [dbo].[vwDT1dSR]
+AS
+ /* 
+  DATE       Name		 Desc
+  03/25/2014 L.K. Weise  Number of shared resources by category for over time (FY2010-2012)
+  04/02/2020 C. Dinh     Updated to 2019 
+                         Telework due to COVID19
+
+  There is a parent (DT1dSR) and child table (MultiLeader) and I want to create a select statement that, given a parent id, returns a row for that parent and additional rows for every child. 
+  Doing a left join is not giving me a row for the parent by itself (it gives me multiple rows of the parent) when one or more children exist. 
+  I know this can be done with a UNION but I'm looking for a solution that does not use a union statement.
+  http://stackoverflow.com/questions/1494353/how-do-i-select-one-parent-row-and-additional-rows-for-its-children-without-a-un
+             
+  Verify the view with big gigs Centers: dana-farber(GrantNumber = 6516), MD Anderson (16672), Fred Hutch (15704), and MSKI (8748)
+  Basic Center: Winship (138292)
+  So So Center: Case Western (43703)	
+  Centers w/o multiDirector: fox chase (6927), wistar (10815)		         
+ 
+  NOTE:
+  Omitting Kansas and Kentucky (168524, 177558) since they just become NCI-desinated in 2013 
+  Omitting SharedResourceCat 5 - Administrative, it's deleted from the list since 2012.
+
+  Select * from srCat;
+  */
+
+select top 2000
+   row_number() over (order by FullName, SrName) as ID, 
+   x.InstitutionName, x.SRCat, x.SRName, x.FullName
+FROM
+(
+SELECT c.InstitutionName,
+			SRCat = 
+				CASE SUBSTRING(d.SubCat1, 1,1)
+					  WHEN '1' THEN 'Cat 1: Laboratory Science'
+					  WHEN '2' THEN 'Cat 2: Laboratory Support'
+					  WHEN '3' THEN 'Cat 3: Epidemiology, Cancer Control'
+					  WHEN '4' THEN 'Cat 4: Clinical Research'
+					  WHEN '6' THEN 'Cat 6: Biostatistics'
+					  WHEN '7' THEN 'Cat 7: Informatics'
+					  WHEN '8' THEN 'Cat 8: Miscellaneous'
+					  ELSE 'N/A'
+				 END, 
+			 d.SRName,
+			 d.LastName + ', ' + d.FirstName AS FullName
+		FROM   DT1dSR d,
+			   Center c
+		WHERE  d.fy = 2018	
+		AND    d.CenterID = c.CenterId
+		AND    d.isActive = 1
+    
+		UNION
+
+		SELECT c.InstitutionName,
+			   SRCat = 
+				CASE  SUBSTRING(d.SubCat1, 1,1)
+					  WHEN '1' THEN 'Cat 1: Laboratory Science'
+					  WHEN '2' THEN 'Cat 2: Laboratory Support'
+					  WHEN '3' THEN 'Cat 3: Epidemiology, Cancer Control'
+					  WHEN '4' THEN 'Cat 4: Clinical Research'
+					  WHEN '6' THEN 'Cat 6: Biostatistics'
+					  WHEN '7' THEN 'Cat 7: Informatics'
+					  WHEN '8' THEN 'Cat 8: Miscellaneous'
+					  ELSE 'N/A'
+				 END, 
+			   d.SRName,
+			   l.LastName + ', ' + l.FirstName AS FullName
+		FROM   DT1dSR d, 
+			   MultiLeader l,
+			   Center c 
+		WHERE  d.fy = 2018
+		AND    d.CenterID = c.CenterId
+		AND    d.isActive = 1
+		AND  d.dt1dsrID = l.dt1dsrID) X 
+ORDER by  X.InstitutionName, X.SRCat, X.SRName, X.FullName;
+
+
+
+
+GO
+
+
